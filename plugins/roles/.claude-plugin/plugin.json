@@ -1,0 +1,8 @@
+{
+  "name": "roles",
+  "version": "0.1.0",
+  "description": "Specialist roles shared across repositories. Each role is a generic subagent that reads the repo's own standards from .claude/standards/ before it works.",
+  "author": {
+    "name": "Alasdair Cunningham-Smith"
+  }
+}
