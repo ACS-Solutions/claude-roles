@@ -30,6 +30,7 @@ Findings cite these IDs, or the house rule's own ID (`H-…`) where one applies.
 - **LOG6 Proportionate volume.** No Information-or-above logs inside per-item or per-packet loops. Expensive arguments are not computed when the level is disabled.
 - **LOG7 Actionable.** A Warning or Error says what was being attempted, on what, what happened, and what the system did next (retried, dropped, stopped).
 - **LOG8 Lifecycle.** Startup logs name, version and a redacted configuration summary; shutdown is logged; state transitions of long-lived components (connected, disconnected, degraded) are logged.
+- **LOG9 Output target detected reliably.** Choosing a log format or sink from the environment (journald, a terminal, a container) uses the signal the platform documents, not one that child processes inherit. For example, `JOURNAL_STREAM` alone does not mean stdout is the journal: systemd says to compare its `device:inode` with stdout's or stderr's.
 
 ### TEL — Telemetry beyond logs
 

@@ -16,6 +16,7 @@ How the generic rules show up in .NET code. House rules still win.
 - **LOG5**: With `ILogger`, pass the exception as the first argument, `LogError(ex, "...")`, unless house rules prescribe a redacted text form instead. `catch (Exception ex) { _logger.LogError(ex, ...); throw; }` repeated at several layers is LOG5.
 - **LOG6**: `logger.IsEnabled(LogLevel.Debug)` guards expensive argument construction. Serilog has `Log.IsEnabled(LogEventLevel.Debug)`.
 - **LOG8**: Serilog static `Log` needs `Log.CloseAndFlush()` / `CloseAndFlushAsync()` in `finally`, or logs written just before exit are lost. A bootstrap logger before configuration is loaded is the usual pattern.
+- **LOG9**: `Environment.GetEnvironmentVariable("JOURNAL_STREAM") != null` alone is LOG9. Checking it properly needs `fstat` on the stdout/stderr descriptor (P/Invoke, or `Mono.Unix`), compared with the variable's `device:inode`.
 
 ## Telemetry
 
@@ -44,3 +45,7 @@ How the generic rules show up in .NET code. House rules still win.
 - **RES2**: `Microsoft.Extensions.Http.Resilience` (`AddStandardResilienceHandler`) or Polly. Retrying POSTs that are not idempotent is RES2.
 - **RES3**: `using` / `await using` on `IDisposable` / `IAsyncDisposable`. Linked `CancellationTokenSource`s must be disposed.
 - **RES4**: Generic Host `HostOptions.ShutdownTimeout`; console apps handle `PosixSignalRegistration` or `Console.CancelKeyPress`.
+
+## Dependencies
+
+- Before calling a package reference unused or speculative, check whether it is also transitive: `dotnet list package --include-transitive`, the project's `obj/project.assets.json`, or the referencing package's `.nuspec` under `~/.nuget/packages/<id>/<version>/`. A direct `PackageReference` (or a `Directory.Packages.props` entry) to a package that is already transitive is normally a version pin, often to lift a vulnerable version, and is not a finding.

@@ -25,7 +25,7 @@ The caller says which mode and scope. If they don't:
 - `all` reviews every source file, excluding generated code, `bin/`, `obj/`, `node_modules/`, migrations and vendored code.
 - `survey` drafts house rules instead of reviewing.
 
-Bash is for read-only commands only: `git diff`, `git log`, `git merge-base`, `git show`, `ls`. Never run commands that change files, the index, branches or remote state.
+Bash is for read-only commands only: `git diff`, `git log`, `git merge-base`, `git show`, `ls`, and the read-only package listings the language skills name (for example `dotnet list package --include-transitive`). Never run commands that change files, the index, branches or remote state.
 
 ## Method
 
@@ -63,8 +63,12 @@ Finish with **Standards observations** (optional, at most three bullets): gaps o
 
 Instead of findings, produce a draft `.claude/standards/xcut.md` describing the conventions **the code already follows**, with house-rule IDs (`H-LOG-1`, `H-ERR-1`, …) so reviews can cite them. For each concern in xcut:standards:
 
-- State the convention as a rule, and cite one or two files that exemplify it.
+- State the convention as a rule, and cite one or two exemplars by symbol (`ClientConnection.Run`, `ProxyHost.StopListeners`) or file path, never by line number: line numbers go stale within a PR, and the house rules outlive many PRs.
 - Where the code is inconsistent, describe the majority pattern as the rule and list the exceptions under "Open questions" for the owner to decide.
 - Where a concern is absent (no metrics, no tracing), state it as a deliberate absence only if CLAUDE.md, the README or the code makes that clear; otherwise list it under "Open questions".
+
+Write each open question so the owner can decide it without reading the code: say in plain language what would have to happen at runtime for the situation to arise (a network drop, a cloud service fault, a malformed message, a shutdown mid-request) and what the user or operator would then see. Then give the options. The code path is supporting evidence, not the question.
+
+Verify the premise of every open question as strictly as a finding. In particular, before calling a dependency unused, speculative or "for future use", check whether it is also a transitive dependency of something else; a direct reference to a transitive package is usually a version pin, often for a security fix. The language skills say how to check.
 
 Return the draft as a single Markdown document in your final message. Do not write the file.
