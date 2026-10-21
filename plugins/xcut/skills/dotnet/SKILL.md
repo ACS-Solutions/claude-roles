@@ -16,7 +16,7 @@ How the generic rules show up in .NET code. House rules still win.
 - **LOG5**: With `ILogger`, pass the exception as the first argument, `LogError(ex, "...")`, unless house rules prescribe a redacted text form instead. `catch (Exception ex) { _logger.LogError(ex, ...); throw; }` repeated at several layers is LOG5.
 - **LOG6**: `logger.IsEnabled(LogLevel.Debug)` guards expensive argument construction. Serilog has `Log.IsEnabled(LogEventLevel.Debug)`.
 - **LOG8**: Serilog static `Log` needs `Log.CloseAndFlush()` / `CloseAndFlushAsync()` in `finally`, or logs written just before exit are lost. A bootstrap logger before configuration is loaded is the usual pattern.
-- **LOG9**: `Environment.GetEnvironmentVariable("JOURNAL_STREAM") != null` alone is LOG9. Checking it properly needs `fstat` on the stdout/stderr descriptor (P/Invoke, or `Mono.Unix`), compared with the variable's `device:inode`.
+- **LOG9**: `Environment.GetEnvironmentVariable("JOURNAL_STREAM") != null` alone is LOG9. .NET has no managed `fstat`. On Linux the simple check reads the link target of `/proc/self/fd/1` (or `2`), for example `new FileInfo("/proc/self/fd/1").LinkTarget`, which is `socket:[<inode>]` for the journal, and compares that inode with the one in `JOURNAL_STREAM`. Comparing the inode alone is acceptable because every socket is on the same sockfs device. A full `device:inode` comparison needs `fstat` through P/Invoke or `Mono.Unix`.
 
 ## Telemetry
 
