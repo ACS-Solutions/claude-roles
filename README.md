@@ -85,3 +85,7 @@ The main session can also delegate to the `xcut:reviewer` agent on its own initi
 - [Plugins](https://code.claude.com/docs/en/plugins) and the [plugins reference](https://code.claude.com/docs/en/plugins-reference)
 - [Subagents](https://code.claude.com/docs/en/sub-agents)
 - [Skills](https://code.claude.com/docs/en/skills)
+
+## Licence
+
+[MIT](LICENSE).

@@ -1,8 +1,9 @@
 {
   "name": "xcut",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Cross-cutting concerns reviewer: logging, telemetry, error handling, configuration and resilience, checked against the repo's house rules in .claude/standards/xcut.md.",
   "author": {
     "name": "Alasdair Cunningham-Smith"
-  }
+  },
+  "license": "MIT"
 }
