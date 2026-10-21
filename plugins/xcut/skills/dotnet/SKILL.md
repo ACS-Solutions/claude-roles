@@ -1,6 +1,6 @@
 ---
-name: xcut-dotnet
-description: .NET specifics (Serilog, Microsoft.Extensions.Logging, OpenTelemetry, ASP.NET Core, Options, HttpClientFactory) for the cross-cutting concerns rules in xcut-standards. Use alongside xcut-standards when writing or reviewing logging, telemetry, error handling, configuration or resilience in C# code.
+name: dotnet
+description: .NET specifics (Serilog, Microsoft.Extensions.Logging, OpenTelemetry, ASP.NET Core, Options, HttpClientFactory) for the cross-cutting concerns rules in xcut:standards. Use alongside xcut:standards when writing or reviewing logging, telemetry, error handling, configuration or resilience in C# code.
 ---
 
 # .NET specifics for cross-cutting concerns

@@ -1,11 +1,11 @@
 ---
-name: xcut-review
+name: review
 description: Run the cross-cutting concerns reviewer (logging, telemetry, error handling, configuration, resilience) on the current diff, given paths, the whole repository, or in survey mode to draft house rules.
 argument-hint: "[diff | path <paths…> | all | survey]"
 disable-model-invocation: true
 ---
 
-Launch the `roles:xcut-reviewer` subagent with this request, passing the mode and scope through unchanged:
+Launch the `xcut:reviewer` subagent with this request, passing the mode and scope through unchanged:
 
 > Mode and scope: $ARGUMENTS
 > (empty means: review the diff of the current branch against its base, including uncommitted changes)

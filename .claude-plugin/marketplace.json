@@ -1,15 +1,15 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "claude-roles",
-  "description": "Specialist roles (reviewers, advisors, auditors) shared across all of Alasdair's repositories",
+  "description": "Specialist roles (reviewers, advisors, auditors) shared across all of Alasdair's repositories, one plugin per role",
   "owner": {
     "name": "Alasdair Cunningham-Smith"
   },
   "plugins": [
     {
-      "name": "roles",
-      "description": "Specialist roles: cross-cutting concerns reviewer (logging, telemetry, error handling, configuration, resilience)",
-      "source": "./plugins/roles",
+      "name": "xcut",
+      "description": "Cross-cutting concerns reviewer: logging, telemetry, error handling, configuration, resilience",
+      "source": "./plugins/xcut",
       "category": "development"
     }
   ]

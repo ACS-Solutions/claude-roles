@@ -1,5 +1,5 @@
 ---
-name: xcut-standards
+name: standards
 description: Generic standards for cross-cutting concerns — logging, telemetry (traces, metrics, health), error handling, configuration and resilience — and how a repository's own house rules in .claude/standards/xcut.md override them. Use when writing or changing code that logs, catches or throws exceptions, reads configuration, makes outbound calls, or adds tracing or metrics, and whenever reviewing such code.
 ---
 
@@ -14,7 +14,7 @@ Where a house rule contradicts a rule below, follow the house rule and do not re
 
 For language and framework specifics, also load the matching skill:
 
-- .NET (Serilog, Microsoft.Extensions.Logging, OpenTelemetry, ASP.NET Core): `xcut-dotnet`
+- .NET (Serilog, Microsoft.Extensions.Logging, OpenTelemetry, ASP.NET Core): `xcut:dotnet`
 
 ## Rule IDs
 
