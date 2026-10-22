@@ -35,29 +35,38 @@ To bootstrap one, run `/xcut:review survey` in the repository, then edit the dra
 
 ## Using it
 
-**Trying out a local checkout** (no install):
+**Register the marketplace once per machine**, with auto-update on:
 
 ```sh
-claude --plugin-dir ~/dev/gh/alasdaircs/claude-roles/plugins/xcut
+claude plugin marketplace add alasdaircs/claude-roles
 ```
 
-**Installing for yourself** on any machine:
+Then set `"autoUpdate": true` on its entry under `extraKnownMarketplaces` in `~/.claude/settings.json`, or use `/plugin` → **Marketplaces** → **Enable auto-update**. Auto-update is off by default for any marketplace that isn't Anthropic's.
 
-```
-/plugin marketplace add alasdaircs/claude-roles
-/plugin install xcut@claude-roles
-```
-
-**Enabling roles for a repository** (so that cloud sessions and anyone cloning the repo get them), in the repo's `.claude/settings.json`:
+**Enable a role in a repository**, in the repo's committed `.claude/settings.json`:
 
 ```json
 {
   "extraKnownMarketplaces": {
-    "claude-roles": { "source": { "source": "github", "repo": "alasdaircs/claude-roles" } }
+    "claude-roles": { "source": { "source": "github", "repo": "alasdaircs/claude-roles" }, "autoUpdate": true }
   },
   "enabledPlugins": { "xcut@claude-roles": true }
 }
 ```
+
+It loads once the folder's workspace trust dialog has been accepted in an interactive session; `claude -p` doesn't count, so headless runs need the user-scope install below or `--plugin-dir`. No per-machine install is needed: a plugin with a relative-path source loads from the marketplace itself. The `extraKnownMarketplaces` entry registers the marketplace on machines that don't have it yet.
+
+**Enable a role in every repository on a machine**: `claude plugin install xcut@claude-roles` (user scope).
+
+**Cloud sessions** ignore the plugins and marketplaces a repository declares in `.claude/settings.json`, and they don't see your user settings either. Install the role from the cloud environment's setup script instead:
+
+```sh
+export CLAUDE_CODE_PLUGIN_PREFER_HTTPS=1
+claude plugin marketplace add alasdaircs/claude-roles
+claude plugin install xcut@claude-roles
+```
+
+The environment caches what the setup script installed for up to about seven days. Edit the script to force a rebuild sooner, or run `claude plugin update xcut@claude-roles` then `/reload-plugins` inside a session.
 
 Then:
 
@@ -69,6 +78,21 @@ Then:
 ```
 
 The main session can also delegate to the `xcut:reviewer` agent on its own initiative, for example before opening a PR.
+
+## Developing and releasing
+
+There are two ways to run a role, and they should not be mixed up:
+
+- **Development**: `claude --plugin-dir ~/dev/gh/alasdaircs/claude-roles/plugins/xcut` loads the working tree as it stands, uncommitted edits included, and overrides an installed copy of the same plugin. Use it only in the session editing the role, and in at most one pilot session that knowingly runs unreleased rules.
+- **Installed**: every other session gets the role from the marketplace on GitHub, so it only ever sees what has been released.
+
+To release a change:
+
+1. Bump `version` in the role's `plugin.json`. Installed copies are cached by version, so a push without a bump reaches no one.
+2. Run `claude plugin validate .` and `claude plugin validate plugins/<role>`.
+3. Commit and push to `main`.
+
+Machines with auto-update on refresh the marketplace in the background, within ten minutes of the first message in a session, and load the new version at their next session start (or at `/reload-plugins`). Elsewhere, run `claude plugin marketplace update claude-roles`, or `claude plugin update <role>@claude-roles` for a plugin installed at user scope. To see which version a machine has, run `claude plugin list`.
 
 ## Adding a role
 
