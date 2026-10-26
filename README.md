@@ -90,7 +90,7 @@ There are two ways to run a role, and they should not be mixed up:
 
 1. Work against a ticket, on a branch named for it (for example `4-readme-release-by-pr`).
 2. Bump `version` in the role's `plugin.json`, in the same pull request as the change. Installed copies are cached by version, so a merge without a bump reaches no one.
-3. Run `claude plugin validate .` and `claude plugin validate plugins/<role>`.
+3. Run `claude plugin validate --strict .`, `claude plugin validate --strict plugins/<role>` and `scripts/check-refs.py`. CI's `validate` check runs the same three on every pull request: the validator checks the manifests and every agent's and skill's frontmatter, and `check-refs.py` checks links, preloaded skills and `<plugin>:<name>` references.
 4. Push the branch and open a pull request that refers to the ticket. Alasdair reviews and merges it.
 
 Once it is merged, machines with auto-update on refresh the marketplace in the background, within ten minutes of the first message in a session, and load the new version at their next session start (or at `/reload-plugins`). Elsewhere, run `claude plugin marketplace update claude-roles`, or `claude plugin update <role>@claude-roles` for a plugin installed at user scope. To see which version a machine has, run `claude plugin list`.
