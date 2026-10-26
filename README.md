@@ -38,7 +38,7 @@ To bootstrap one, run `/xcut:review survey` in the repository, then edit the dra
 **Register the marketplace once per machine**, with auto-update on:
 
 ```sh
-claude plugin marketplace add alasdaircs/claude-roles
+claude plugin marketplace add ACS-Solutions/claude-roles
 ```
 
 Then set `"autoUpdate": true` on its entry under `extraKnownMarketplaces` in `~/.claude/settings.json`, or use `/plugin` → **Marketplaces** → **Enable auto-update**. Auto-update is off by default for any marketplace that isn't Anthropic's.
@@ -48,7 +48,7 @@ Then set `"autoUpdate": true` on its entry under `extraKnownMarketplaces` in `~/
 ```json
 {
   "extraKnownMarketplaces": {
-    "claude-roles": { "source": { "source": "github", "repo": "alasdaircs/claude-roles" }, "autoUpdate": true }
+    "claude-roles": { "source": { "source": "github", "repo": "ACS-Solutions/claude-roles" }, "autoUpdate": true }
   },
   "enabledPlugins": { "xcut@claude-roles": true }
 }
@@ -62,7 +62,7 @@ It loads once the folder's workspace trust dialog has been accepted in an intera
 
 ```sh
 export CLAUDE_CODE_PLUGIN_PREFER_HTTPS=1
-claude plugin marketplace add alasdaircs/claude-roles
+claude plugin marketplace add ACS-Solutions/claude-roles
 claude plugin install xcut@claude-roles
 ```
 
@@ -83,7 +83,7 @@ The main session can also delegate to the `xcut:reviewer` agent on its own initi
 
 There are two ways to run a role, and they should not be mixed up:
 
-- **Development**: `claude --plugin-dir ~/dev/gh/alasdaircs/claude-roles/plugins/xcut` loads the working tree as it stands, uncommitted edits included, and overrides an installed copy of the same plugin. Use it only in the session editing the role, and in at most one pilot session that knowingly runs unreleased rules.
+- **Development**: `claude --plugin-dir ~/dev/gh/acs-solutions/claude-roles/plugins/xcut` loads the working tree as it stands, uncommitted edits included, and overrides an installed copy of the same plugin. Use it only in the session editing the role, and in at most one pilot session that knowingly runs unreleased rules.
 - **Installed**: every other session gets the role from the marketplace on GitHub, so it only ever sees what has been released.
 
 To release a change:
