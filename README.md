@@ -86,13 +86,14 @@ There are two ways to run a role, and they should not be mixed up:
 - **Development**: `claude --plugin-dir ~/dev/gh/acs-solutions/claude-roles/plugins/xcut` loads the working tree as it stands, uncommitted edits included, and overrides an installed copy of the same plugin. Use it only in the session editing the role, and in at most one pilot session that knowingly runs unreleased rules.
 - **Installed**: every other session gets the role from the marketplace on GitHub, so it only ever sees what has been released.
 
-To release a change:
+`main` accepts changes only by pull request, and a release happens when one is merged. To release a change:
 
-1. Bump `version` in the role's `plugin.json`. Installed copies are cached by version, so a push without a bump reaches no one.
-2. Run `claude plugin validate .` and `claude plugin validate plugins/<role>`.
-3. Commit and push to `main`.
+1. Work against a ticket, on a branch named for it (for example `4-readme-release-by-pr`).
+2. Bump `version` in the role's `plugin.json`, in the same pull request as the change. Installed copies are cached by version, so a merge without a bump reaches no one.
+3. Run `claude plugin validate .` and `claude plugin validate plugins/<role>`.
+4. Push the branch and open a pull request that refers to the ticket. Alasdair reviews and merges it.
 
-Machines with auto-update on refresh the marketplace in the background, within ten minutes of the first message in a session, and load the new version at their next session start (or at `/reload-plugins`). Elsewhere, run `claude plugin marketplace update claude-roles`, or `claude plugin update <role>@claude-roles` for a plugin installed at user scope. To see which version a machine has, run `claude plugin list`.
+Once it is merged, machines with auto-update on refresh the marketplace in the background, within ten minutes of the first message in a session, and load the new version at their next session start (or at `/reload-plugins`). Elsewhere, run `claude plugin marketplace update claude-roles`, or `claude plugin update <role>@claude-roles` for a plugin installed at user scope. To see which version a machine has, run `claude plugin list`.
 
 ## Adding a role
 
@@ -101,7 +102,7 @@ Machines with auto-update on refresh the marketplace in the background, within t
 3. Write `agents/<agent>.md`: limit its tools, preload the standards and language skills, define its report format and severities.
 4. Add a `skills/review/SKILL.md` command if it will be invoked by hand.
 5. Keep the plugin self-contained: nothing outside `plugins/<role>/` is installed with it.
-6. Bump `version` in the role's `plugin.json` on every change, and run `claude plugin validate` on the marketplace and the plugin.
+6. Release it as under [Developing and releasing](#developing-and-releasing): a ticket, a branch, a `version` bump on every change, `claude plugin validate`, and a pull request.
 7. Pilot it on one repository before relying on it.
 
 ## References
